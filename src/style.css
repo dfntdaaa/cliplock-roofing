@@ -1415,3 +1415,84 @@ img {
     font-size: 23px;
   }
 }
+
+/* ==========================================
+   CLIPLOCK ROOFING — LARGER CONTENT TEXT
+========================================== */
+
+/* Main paragraph text */
+.hero-text,
+.section-intro,
+.about-copy > p:not(.eyebrow),
+.area-copy p,
+.estimate-copy > p:not(.eyebrow) {
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+/* Service and pricing descriptions */
+.service-card > p:not(.card-tag),
+.price-card > p:not(.card-tag) {
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+/* Service and pricing details */
+.service-card li,
+.price-card li {
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* General content and feature lists */
+.about-copy li,
+.area-grid li,
+.feature-list li {
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+/* Review text */
+.review-card p,
+.testimonial p {
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+/* Form labels and input text */
+.estimate-form label {
+  font-size: 13px;
+}
+
+.estimate-form input,
+.estimate-form select,
+.estimate-form textarea {
+  font-size: 15px;
+}
+
+/* Footer and small supporting text */
+.footer,
+.footer p,
+.footer a {
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* Mobile readability */
+@media (max-width: 700px) {
+  .hero-text,
+  .section-intro,
+  .about-copy > p:not(.eyebrow),
+  .area-copy p,
+  .estimate-copy > p:not(.eyebrow) {
+    font-size: 15px;
+  }
+
+  .service-card > p:not(.card-tag),
+  .price-card > p:not(.card-tag),
+  .service-card li,
+  .price-card li {
+    font-size: 14px;
+  }
+}
+
