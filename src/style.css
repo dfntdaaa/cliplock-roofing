@@ -1301,3 +1301,117 @@ img {
     animation-duration: 0.01ms !important;
   }
 }
+/* ==========================================
+   CLIPLOCK ROOFING — LARGER TYPOGRAPHY
+========================================== */
+
+/* Navigation and logo */
+.brand-name {
+  font-size: 14px;
+}
+
+.nav {
+  font-size: 14px;
+}
+
+/* Main hero heading */
+.hero h1 {
+  font-size: clamp(50px, 5.8vw, 76px);
+  line-height: 1.08;
+}
+
+/* Section headings */
+.section-heading h2,
+.about-copy h2,
+.area-grid h2,
+.estimate-copy h2 {
+  font-size: clamp(42px, 4.8vw, 62px);
+  line-height: 1.12;
+}
+
+/* Paragraphs and supporting text */
+.hero-text,
+.section-intro,
+.about-copy > p:not(.eyebrow),
+.area-copy p,
+.estimate-copy > p:not(.eyebrow) {
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+/* Service and pricing card headings */
+.service-card h3,
+.price-card h3 {
+  font-size: 24px;
+}
+
+.service-card > p:not(.card-tag),
+.price-card > p:not(.card-tag) {
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+/* Labels and eyebrow headings */
+.eyebrow {
+  font-size: 11px;
+}
+
+.card-tag {
+  font-size: 10px;
+}
+
+/* Buttons and links */
+.button {
+  font-size: 14px;
+}
+
+.text-link,
+.card-link {
+  font-size: 14px;
+}
+
+/* Form text */
+.estimate-form label {
+  font-size: 12px;
+}
+
+.estimate-form input,
+.estimate-form select,
+.estimate-form textarea {
+  font-size: 14px;
+}
+
+.form-heading h3 {
+  font-size: 24px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 700px) {
+  .brand-name {
+    font-size: 12px;
+  }
+
+  .hero h1 {
+    font-size: clamp(46px, 11.5vw, 60px);
+  }
+
+  .section-heading h2,
+  .about-copy h2,
+  .area-grid h2,
+  .estimate-copy h2 {
+    font-size: clamp(38px, 9.5vw, 48px);
+  }
+
+  .hero-text,
+  .section-intro,
+  .about-copy > p:not(.eyebrow),
+  .area-copy p,
+  .estimate-copy > p:not(.eyebrow) {
+    font-size: 14px;
+  }
+
+  .service-card h3,
+  .price-card h3 {
+    font-size: 23px;
+  }
+}
