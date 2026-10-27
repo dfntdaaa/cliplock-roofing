@@ -1460,3 +1460,431 @@ a {
     font-size: 11px;
   }
 }
+
+
+/* ==========================================
+   CLIPLOCK ROOFING — ORANGE & WHITE REDESIGN
+   Whop-inspired • Premium • Responsive
+========================================== */
+
+:root {
+  --bg: #0b0b0c;
+  --panel: #141416;
+  --panel2: #1c1c1f;
+  --line: #303034;
+  --text: #ffffff;
+  --muted: #b4b4ba;
+  --orange: #ff6a1a;
+  --orange2: #ff8a3d;
+  --white: #ffffff;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  background:
+    radial-gradient(
+      ellipse at 85% 5%,
+      #ff6a1a0b,
+      transparent 35%
+    ),
+    #0b0b0c;
+  color: #ffffff;
+}
+
+::selection {
+  background: #ff6a1a;
+  color: #111111;
+}
+
+/* Header and brand */
+
+.header {
+  background: rgb(11 11 12 / 92%);
+  border-bottom: 1px solid rgb(255 106 26 / 20%);
+  backdrop-filter: blur(20px);
+}
+
+.brand {
+  color: #ffffff;
+  letter-spacing: 0.07em;
+}
+
+.brand b {
+  color: #ff6a1a;
+}
+
+.brand-mark {
+  background: #ff6a1a;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 24px rgb(255 106 26 / 24%);
+}
+
+.nav {
+  color: #e2e2e5;
+}
+
+.nav > a:not(.button):hover,
+.text-link:hover {
+  color: #ff8a3d;
+}
+
+/* Buttons */
+
+.button {
+  background: #ff6a1a;
+  border: 1px solid #ff6a1a;
+  color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 5px 22px rgb(255 106 26 / 12%);
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.button:hover {
+  background: #ff812e;
+  border-color: #ff812e;
+  color: #ffffff;
+  box-shadow: 0 8px 30px rgb(255 106 26 / 25%);
+  transform: translateY(-2px);
+}
+
+.button-outline {
+  background: transparent;
+  border-color: #56565c;
+  color: #ffffff;
+}
+
+.button-outline:hover {
+  background: #ff6a1a;
+  border-color: #ff6a1a;
+  color: #ffffff;
+}
+
+/* Headings and orange accents */
+
+.hero h1,
+.section-heading h2,
+.about-copy h2,
+.area-grid h2,
+.estimate-copy h2 {
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.hero h1 span,
+.section-heading h2 span,
+.about-copy h2 span,
+.area-grid h2 span,
+.estimate-copy h2 span {
+  color: #ff6a1a;
+}
+
+.eyebrow,
+.card-tag {
+  color: #ff7a2b;
+}
+
+.live-dot {
+  background: #ff6a1a;
+  box-shadow: 0 0 15px rgb(255 106 26 / 65%);
+}
+
+/* Hero image */
+
+.hero-visual {
+  border: 1px solid rgb(255 106 26 / 25%);
+  border-radius: 14px;
+  background: #171719;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 35%);
+}
+
+.hero-visual > img {
+  filter: saturate(0.9) contrast(1.04);
+  transition: transform 600ms ease;
+}
+
+.hero-visual:hover > img {
+  transform: scale(1.035);
+}
+
+.image-shade {
+  background:
+    linear-gradient(
+      180deg,
+      transparent 30%,
+      rgb(0 0 0 / 78%) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgb(0 0 0 / 20%),
+      transparent
+    );
+}
+
+.caption-mark {
+  background: #ff6a1a;
+  color: #ffffff;
+  border-radius: 9px;
+}
+
+.caption-arrow {
+  color: #ff6a1a;
+}
+
+/* Trust strip */
+
+.trust-strip {
+  border-top: 1px solid #29292d;
+  border-bottom: 1px solid #29292d;
+  background: #101012;
+}
+
+.trust-symbol {
+  color: #ff6a1a;
+}
+
+/* Service cards */
+
+.service-card,
+.price-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgb(255 255 255 / 3%),
+      transparent 60%
+    ),
+    #141416;
+  border: 1px solid #303034;
+  border-radius: 13px;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.service-card:hover,
+.price-card:hover {
+  transform: translateY(-5px);
+  border-color: rgb(255 106 26 / 65%);
+  box-shadow: 0 18px 45px rgb(0 0 0 / 24%);
+}
+
+.service-icon,
+.service-number {
+  color: #ff6a1a;
+}
+
+.card-link {
+  color: #ff7a2b;
+}
+
+/* Pricing */
+
+.price-featured {
+  border-color: #ff6a1a;
+  box-shadow: inset 0 0 35px rgb(255 106 26 / 5%);
+}
+
+.popular-tag {
+  background: #ff6a1a;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+/* About section */
+
+.about-image {
+  border: 1px solid #343438;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.about-image img {
+  transition: transform 600ms ease;
+}
+
+.about-image:hover img {
+  transform: scale(1.035);
+}
+
+.image-stamp {
+  border-color: rgb(255 106 26 / 65%);
+  background: rgb(11 11 12 / 88%);
+  backdrop-filter: blur(10px);
+}
+
+.image-stamp strong {
+  color: #ff6a1a;
+}
+
+.approach-list > div > span {
+  color: #ff6a1a;
+}
+
+/* Financing and service area */
+
+.finance-callout,
+.area-panel,
+.review-note {
+  background: #141416;
+  border: 1px solid #303034;
+  border-radius: 13px;
+}
+
+.finance-icon,
+.area-pin {
+  color: #ff6a1a;
+}
+
+.area-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.area-grid-lines {
+  opacity: 0.55;
+}
+
+/* Estimate form */
+
+.estimate-section {
+  background:
+    radial-gradient(
+      ellipse at 5% 50%,
+      rgb(255 106 26 / 8%),
+      transparent 48%
+    ),
+    #101012;
+  border-top: 1px solid #29292d;
+  border-bottom: 1px solid #29292d;
+}
+
+.estimate-form {
+  background: #161618;
+  border: 1px solid #36363a;
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 25%);
+}
+
+.estimate-form input,
+.estimate-form select,
+.estimate-form textarea {
+  background: #0e0e10;
+  color: #ffffff;
+  border: 1px solid #3a3a40;
+  border-radius: 7px;
+}
+
+.estimate-form input:focus,
+.estimate-form select:focus,
+.estimate-form textarea:focus {
+  outline: none;
+  border-color: #ff6a1a;
+  box-shadow: 0 0 0 3px rgb(255 106 26 / 12%);
+}
+
+.estimate-form input::placeholder,
+.estimate-form textarea::placeholder {
+  color: #85858d;
+}
+
+.form-heading {
+  border-bottom-color: #343438;
+}
+
+.estimate-promise > span {
+  color: #ff6a1a;
+}
+
+/* Footer */
+
+.footer {
+  background: #09090a;
+}
+
+.footer-main,
+.footer-bottom {
+  border-color: #29292d;
+}
+
+.back-top {
+  color: #ff6a1a;
+}
+
+/* Checkout modal */
+
+.checkout-modal {
+  background: #141416;
+  border: 1px solid #39393e;
+  border-radius: 14px;
+  color: #ffffff;
+}
+
+.modal-close {
+  color: #ffffff;
+}
+
+.setup-note {
+  background: #1c1c1f;
+  border: 1px solid #39393e;
+  border-left: 3px solid #ff6a1a;
+  border-radius: 8px;
+}
+
+/* Keyboard accessibility */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #ff8a3d;
+  outline-offset: 3px;
+}
+
+/* Mobile refinements */
+
+@media (max-width: 760px) {
+  .header {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nav {
+    background: #111113;
+    border: 1px solid #303034;
+    border-radius: 12px;
+  }
+
+  .hero-visual {
+    min-height: 340px;
+    border-radius: 12px;
+  }
+
+  .hero-actions {
+    flex-wrap: wrap;
+  }
+
+  .service-card:hover,
+  .price-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
