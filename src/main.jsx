@@ -1,279 +1,178 @@
-
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import {
-  WhopElements,
-  Payments,
-  PaymentElement,
-  ExpressCheckoutElement,
-  BrandingElement
-} from '@whop/elements-react';
-import { loadWhop } from '@whop/elements';
 import './style.css';
 
 const services = [
   {
+    number: '01',
     icon: '↗',
-    name: 'Roof Repair',
-    text: 'Targeted repairs for leaks, storm damage, and worn roofing details.',
-    tag: 'FAST RESPONSE'
+    title: 'Roof Repair',
+    tag: 'REPAIR & RESTORE',
+    description:
+      'Address leaks, storm damage, and worn roofing details with a practical repair plan.'
   },
   {
+    number: '02',
     icon: '⌂',
-    name: 'Roof Replacement',
-    text: 'A fresh roofing system selected for your property, budget, and climate.',
-    tag: 'BUILT FOR THE LONG RUN'
+    title: 'Roof Replacement',
+    tag: 'BUILT FOR THE LONG RUN',
+    description:
+      'Explore replacement options suited to your property, project requirements, and budget.'
   },
   {
+    number: '03',
     icon: '◎',
-    name: 'Roof Inspection',
-    text: 'A clear assessment of your roof’s condition and the next steps to take.',
-    tag: 'STARTING AT $149'
+    title: 'Roof Inspection',
+    tag: 'START WITH CLARITY',
+    description:
+      'Understand your roof’s condition and identify sensible next steps before committing.'
   }
 ];
 
 const plans = [
   {
-    id: 'inspection',
-    price: '$149',
     name: 'Roof Inspection',
-    description: 'A professional roof condition assessment.',
-    planEnv: 'VITE_WHOP_INSPECTION_PLAN_ID',
-    amount: 14900,
+    price: '$149',
+    description: 'A starting price for a roof condition assessment.',
     featured: false
   },
   {
-    id: 'deposit',
-    price: '$500',
     name: 'Project Deposit',
-    description: 'Reserve your approved roofing project.',
-    planEnv: 'VITE_WHOP_DEPOSIT_PLAN_ID',
-    amount: 50000,
+    price: '$500',
+    description: 'A sample deposit for an approved roofing project.',
     featured: true
   },
   {
-    id: 'flat-rate',
-    price: 'Flat rate',
     name: 'Roofing Service',
-    description: 'Pay for a defined service at its agreed flat rate.',
-    planEnv: 'VITE_WHOP_FLAT_RATE_PLAN_ID',
-    amount: null,
+    price: 'Custom',
+    description: 'Pricing based on the agreed project scope.',
     featured: false
   }
 ];
 
-function track(eventName, properties = {}) {
-  try {
-    if (
-      window.whop &&
-      typeof window.whop.track === 'function'
-    ) {
-      window.whop.track(eventName, properties);
-    }
-  } catch (error) {
-    console.warn('Whop tracking unavailable', error);
-  }
-}
-
 function Header() {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <header className="header">
-      <a
-        className="brand"
-        href="#home"
-        aria-label="Cliplock Roofing home"
-      >
-        <span className="brand-mark">
-          C<span>+</span>
-        </span>
-        <span>
+      <a className="brand" href="#home" aria-label="Cliplock Roofing home">
+        <span className="brand-mark">C<span>+</span></span>
+        <span className="brand-name">
           CLIPLOCK <b>ROOFING</b>
         </span>
       </a>
 
       <button
         className="menu-toggle"
-        onClick={() => setOpen(!open)}
+        type="button"
+        onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle navigation"
+        aria-expanded={menuOpen}
       >
-        ☰
+        {menuOpen ? '×' : '☰'}
       </button>
 
-      <nav className={open ? 'nav nav-open' : 'nav'}>
-        {[
-          ['Services', '#services'],
-          ['Our approach', '#about'],
-          ['Service area', '#area'],
-          ['Reviews', '#reviews']
-        ].map(([label, href]) => (
-          <a
-            key={href}
-            href={href}
-            onClick={() => setOpen(false)}
-          >
-            {label}
-          </a>
-        ))}
-
-        <a
-          className="button button-small"
-          href="#estimate"
-          onClick={() => setOpen(false)}
-        >
-          Request an estimate <span>↗</span>
+      <nav className={menuOpen ? 'nav nav-open' : 'nav'}>
+        <a href="#services" onClick={closeMenu}>Services</a>
+        <a href="#about" onClick={closeMenu}>Our approach</a>
+        <a href="#area" onClick={closeMenu}>Service area</a>
+        <a href="#reviews" onClick={closeMenu}>Reviews</a>
+        <a className="button button-small" href="#estimate" onClick={closeMenu}>
+          Get an estimate <span>↗</span>
         </a>
       </nav>
     </header>
   );
 }
 
-function CheckoutPanel({ plan, onClose }) {
-  const accountId = import.meta.env.VITE_WHOP_ACCOUNT_ID;
-  const planId = import.meta.env[plan.planEnv];
-
-  const environment =
-    import.meta.env.VITE_WHOP_ENVIRONMENT === 'production'
-      ? 'production'
-      : 'sandbox';
-
-  if (!accountId || !planId || !plan.amount) {
-    return (
-      <div
-        className="modal-backdrop"
-        onClick={onClose}
-      >
-        <div
-          className="checkout-modal"
-          onClick={(event) => event.stopPropagation()}
-        >
-          <button
-            className="modal-close"
-            onClick={onClose}
-            aria-label="Close"
-          >
-            ×
-          </button>
-
-          <p className="eyebrow">WHOP CHECKOUT SETUP</p>
-          <h2>{plan.name}</h2>
-
-          <p className="muted">
-            {plan.price} · {plan.description}
-          </p>
-
-          <div className="setup-note">
-            <strong>Almost ready.</strong>
-            <p>
-              Add your Whop account ID and this plan’s ID
-              to the <code>.env</code> file after creating
-              the products in your Whop dashboard. The
-              payment form will appear here once the
-              required settings are configured.
-            </p>
-          </div>
-
-          <p className="tiny">
-            This starter does not collect or store card
-            details itself.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
+function CheckoutDialog({ plan, onClose }) {
   return (
     <div
       className="modal-backdrop"
       onClick={onClose}
+      role="presentation"
     >
-      <div
+      <section
         className="checkout-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="checkout-title"
         onClick={(event) => event.stopPropagation()}
       >
         <button
           className="modal-close"
+          type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label="Close dialog"
         >
           ×
         </button>
 
-        <p className="eyebrow">
-          SECURE CHECKOUT · {environment.toUpperCase()}
-        </p>
+        <p className="eyebrow">PAYMENT OPTIONS</p>
+        <h2 id="checkout-title">{plan.name}</h2>
+        <p className="checkout-price">{plan.price}</p>
+        <p className="muted">{plan.description}</p>
 
-        <h2>{plan.name}</h2>
+        <div className="setup-note">
+          <strong>Confirm your project details first.</strong>
+          <p>
+            Please confirm the final service, amount, currency, and payment
+            terms before making a payment.
+          </p>
+        </div>
 
-        <p className="muted">
-          {plan.price} · {plan.description}
-        </p>
-
-        <WhopElements
-          elements={loadWhop()}
-          environment={environment}
+        <a
+          className="button full-width"
+          href="#estimate"
+          onClick={onClose}
         >
-          <Payments
-            accountId={accountId}
-            currency="usd"
-            amount={plan.amount}
-          >
-            <ExpressCheckoutElement />
-            <PaymentElement />
-            <BrandingElement />
-          </Payments>
-        </WhopElements>
+          Discuss this option <span>↗</span>
+        </a>
 
         <p className="tiny">
-          Payments are handled by Whop. Express wallet
-          availability depends on the browser, device,
-          and environment.
+          This dialog is a front-end placeholder. Connect your existing Whop
+          checkout integration before accepting payments.
         </p>
-      </div>
+      </section>
     </div>
   );
 }
 
 function App() {
   const [selectedPlan, setSelectedPlan] = useState(null);
-
   const [form, setForm] = useState({
     name: '',
     email: '',
     phone: '',
-    zip: '',
+    postalCode: '',
     service: 'Roof Inspection',
     details: ''
   });
+  const [formStatus, setFormStatus] = useState('idle');
 
-  const [formState, setFormState] = useState('idle');
-
-  const change = (event) => {
-    setForm({
-      ...form,
+  function handleChange(event) {
+    setForm((previous) => ({
+      ...previous,
       [event.target.name]: event.target.value
-    });
-  };
+    }));
+  }
 
-  const chooseService = (name) => {
-    track('service_viewed', {
-      service_name: name
-    });
-
-    setForm((current) => ({
-      ...current,
-      service: name
+  function selectService(serviceName) {
+    setForm((previous) => ({
+      ...previous,
+      service: serviceName
     }));
 
-    document
-      .querySelector('#estimate')
-      ?.scrollIntoView({ behavior: 'smooth' });
-  };
+    document.querySelector('#estimate')?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
 
-  async function submitEstimate(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    setFormState('sending');
+    setFormStatus('sending');
 
     try {
       const response = await fetch('/api/leads', {
@@ -288,37 +187,21 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error(
-          'The estimate form endpoint is not configured yet.'
-        );
+        throw new Error('Unable to submit the estimate request.');
       }
 
-      track('estimate_requested', {
-        service_name: form.service
-      });
-
-      setFormState('success');
-
+      setFormStatus('success');
       setForm({
         name: '',
         email: '',
         phone: '',
-        zip: '',
+        postalCode: '',
         service: 'Roof Inspection',
         details: ''
       });
-    } catch (error) {
-      setFormState('error');
+    } catch {
+      setFormStatus('error');
     }
-  }
-
-  function startDeposit() {
-    track('deposit_started', {
-      amount: 500,
-      currency: 'USD'
-    });
-
-    setSelectedPlan(plans[1]);
   }
 
   return (
@@ -328,147 +211,106 @@ function App() {
       <main>
         <section className="hero section-wrap" id="home">
           <div className="hero-copy">
-            <div className="eyebrow">
-              <span className="live-dot"></span>
+            <p className="eyebrow">
+              <span className="live-dot" />
               ROOFING DONE WITH PURPOSE
-            </div>
+            </p>
 
             <h1>
-              Protect what
+              Protection that
               <br />
-              matters <span>most.</span>
+              starts <span>at the top.</span>
             </h1>
 
             <p className="hero-text">
-              Dependable roofing, straight answers, and
-              workmanship built to stand up to the weather.
-              Let’s make your next roof decision a confident
-              one.
+              Dependable roofing, straightforward advice, and a clear plan
+              for protecting your property. Get to know your options before
+              making your next move.
             </p>
 
             <div className="hero-actions">
               <a className="button" href="#estimate">
-                Get a free estimate <span>↗</span>
+                Request an estimate <span>↗</span>
               </a>
-
               <a className="text-link" href="#services">
                 Explore services <span>↓</span>
               </a>
             </div>
 
             <div className="hero-proof">
-              <div className="proof-icon">✓</div>
+              <span className="proof-icon">✓</span>
               <div>
                 <strong>Clear scope. No guesswork.</strong>
-                <small>
-                  Know the next step before work begins.
-                </small>
+                <small>Understand the next step before work begins.</small>
               </div>
             </div>
           </div>
 
           <div className="hero-visual">
-<img
-  src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85"
-  alt="Contemporary residential architecture with a premium modern roof"
-  loading="eager"
-  onError={(event) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src =
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85';
-  }}
-/>
-
-            <div className="image-shade"></div>
-
+            <img
+              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85"
+              alt="Contemporary home with refined architectural details"
+              fetchPriority="high"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src =
+                  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85';
+              }}
+            />
+            <div className="image-shade" />
             <div className="hero-image-caption">
               <span className="caption-mark">C+</span>
-
               <div>
-                <strong>Built to protect.</strong>
-                <small>
-                  Roofing that works as hard as you do.
-                </small>
+                <strong>Cliplock Roofing</strong>
+                <small>Built to protect. Made to last.</small>
               </div>
-
               <span className="caption-arrow">↗</span>
             </div>
-
-            <div className="vertical-label">
-              CLIPLOCK ROOFING · BUILT FOR THE LONG RUN
-            </div>
+            <span className="vertical-label">CRAFT · CARE · CONFIDENCE</span>
           </div>
 
           <div className="hero-bottom">
-            <span>01 / A BETTER ROOFING EXPERIENCE</span>
-            <span>
-              REPAIRS · REPLACEMENTS · INSPECTIONS
-            </span>
+            <span>RESIDENTIAL ROOFING SOLUTIONS</span>
+            <span>QUALITY IN EVERY DETAIL</span>
           </div>
         </section>
 
         <section className="trust-strip">
-          <div>
-            <span className="trust-symbol">✳</span>
-            <span>STRAIGHTFORWARD ESTIMATES</span>
-          </div>
-          <div>
-            <span className="trust-symbol">⌁</span>
-            <span>QUALITY-FIRST WORK</span>
-          </div>
-          <div>
-            <span className="trust-symbol">◈</span>
-            <span>RESPECT FOR YOUR PROPERTY</span>
-          </div>
-          <div>
-            <span className="trust-symbol">↗</span>
-            <span>COMMUNICATION THAT'S CLEAR</span>
-          </div>
+          <div><span>✳</span> CLEAR COMMUNICATION</div>
+          <div><span>⌂</span> PRACTICAL SOLUTIONS</div>
+          <div><span>✓</span> DETAIL-FOCUSED SERVICE</div>
         </section>
 
-        <section
-          className="section-wrap section-block"
-          id="services"
-        >
+        <section className="section-wrap section-block" id="services">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">01 — WHAT WE DO</p>
+              <p className="eyebrow">WHAT WE DO</p>
               <h2>
-                Roofing solutions.
+                Roofing solutions,
                 <br />
-                <span>Real peace of mind.</span>
+                <span>made straightforward.</span>
               </h2>
             </div>
-
             <p className="section-intro">
-              From a small leak to a full replacement, we
-              help you understand the condition of your roof
-              and choose a practical path forward.
+              From a small repair to a full replacement, start with a clear
+              understanding of your roof and the options available.
             </p>
           </div>
 
           <div className="service-grid">
-            {services.map((service, index) => (
-              <article
-                className="service-card"
-                key={service.name}
-              >
+            {services.map((service) => (
+              <article className="service-card" key={service.number}>
                 <div className="service-top">
-                  <span className="service-icon">
-                    {service.icon}
-                  </span>
-                  <span className="service-number">
-                    0{index + 1}
-                  </span>
+                  <span className="service-icon">{service.icon}</span>
+                  <span className="service-number">{service.number}</span>
                 </div>
-
                 <p className="card-tag">{service.tag}</p>
-                <h3>{service.name}</h3>
-                <p>{service.text}</p>
-
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
                 <button
                   className="card-link"
-                  onClick={() => chooseService(service.name)}
+                  type="button"
+                  onClick={() => selectService(service.title)}
                 >
                   Discuss this service <span>↗</span>
                 </button>
@@ -480,427 +322,306 @@ function App() {
         <section className="about-section" id="about">
           <div className="section-wrap about-grid">
             <div className="about-image">
-<img
-  src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85"
-  alt="Construction professionals working on a building project"
-  loading="lazy"
-  onError={(event) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src =
-      'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=85';
-  }}
-/>
-
-              <div className="image-stamp">
-                <span>THE CLIPLOCK</span>
-                <strong>STANDARD</strong>
-                <span>CARE IN EVERY DETAIL</span>
-              </div>
+              <img
+                src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85"
+                alt="Construction professionals working on a building project"
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src =
+                    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=85';
+                }}
+              />
             </div>
 
             <div className="about-copy">
-              <p className="eyebrow">02 — OUR APPROACH</p>
-
+              <p className="eyebrow">OUR APPROACH</p>
               <h2>
-                Good work starts
+                Good work begins
                 <br />
-                with <span>good people.</span>
+                with <span>a clear plan.</span>
               </h2>
-
               <p>
-                Roofing can feel complicated. Our job is to
-                make it clearer: listen to your concerns,
-                explain the options, outline the work, and
-                keep you informed along the way.
+                Roofing decisions should feel informed, not overwhelming.
+                Our approach focuses on understanding the problem, explaining
+                available options, and helping you make a confident decision.
               </p>
 
               <div className="approach-list">
                 <div>
                   <span>01</span>
-                  <div>
-                    <strong>Assess before we advise</strong>
-                    <p>
-                      Understand the issue before recommending
-                      a solution.
-                    </p>
-                  </div>
+                  <p>
+                    <strong>Understand the roof</strong>
+                    <small>Identify the condition and project priorities.</small>
+                  </p>
                 </div>
-
                 <div>
                   <span>02</span>
-                  <div>
-                    <strong>Keep the details clear</strong>
-                    <p>
-                      Know what’s included, what it costs,
-                      and what happens next.
-                    </p>
-                  </div>
+                  <p>
+                    <strong>Explain the options</strong>
+                    <small>Discuss practical solutions and the estimate.</small>
+                  </p>
                 </div>
-
                 <div>
                   <span>03</span>
-                  <div>
-                    <strong>Respect your home</strong>
-                    <p>
-                      Thoughtful planning and a clean,
-                      professional work area.
-                    </p>
-                  </div>
+                  <p>
+                    <strong>Plan the next step</strong>
+                    <small>Keep expectations and communication clear.</small>
+                  </p>
                 </div>
               </div>
 
-              <a className="button button-outline" href="#estimate">
-                Talk to our team <span>↗</span>
+              <a className="button button-dark" href="#estimate">
+                Talk about your project <span>↗</span>
               </a>
             </div>
           </div>
         </section>
 
-        <section
-          className="pricing-section section-wrap"
-          id="pricing"
-        >
-          <div className="section-heading">
+        <section className="section-wrap section-block" id="area">
+          <div className="area-grid">
             <div>
-              <p className="eyebrow">03 — SIMPLE STARTING POINTS</p>
+              <p className="eyebrow">SERVICE AREA</p>
               <h2>
-                Know your <span>next step.</span>
+                Local service.
+                <br />
+                <span>Clear communication.</span>
               </h2>
             </div>
+            <div className="area-copy">
+              <p>
+                Tell us where your property is located and what kind of roofing
+                help you need. We can then confirm whether the project falls
+                within the service area.
+              </p>
+              <a className="text-link" href="#estimate">
+                Check service availability <span>↗</span>
+              </a>
+              <p className="tiny">
+                Update this section with your confirmed cities and service
+                locations before publishing.
+              </p>
+            </div>
+          </div>
+        </section>
 
+        <section className="reviews-section" id="reviews">
+          <div className="section-wrap section-block">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">CUSTOMER EXPERIENCE</p>
+                <h2>
+                  Trust is built
+                  <br />
+                  <span>one project at a time.</span>
+                </h2>
+              </div>
+              <p className="section-intro">
+                A professional roofing experience should be clear, respectful,
+                and focused on the details that matter.
+              </p>
+            </div>
+
+            <div className="review-note">
+              <span className="review-quote">“</span>
+              <div>
+                <h3>Your project deserves clear answers.</h3>
+                <p>
+                  Add verified customer testimonials here when they are
+                  available. This design avoids presenting invented reviews
+                  as real customer feedback.
+                </p>
+              </div>
+              <a className="text-link" href="#estimate">
+                Start a conversation <span>↗</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section className="section-wrap section-block" id="pricing">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">PAYMENT OPTIONS</p>
+              <h2>
+                Simple starting points.
+                <br />
+                <span>Clear expectations.</span>
+              </h2>
+            </div>
             <p className="section-intro">
-              Choose a starting point below. Final project
-              pricing should be confirmed in writing after
-              the scope is reviewed.
+              Review the starting options below. Confirm the actual scope,
+              price, currency, and payment terms before purchasing.
             </p>
           </div>
 
           <div className="pricing-grid">
             {plans.map((plan) => (
               <article
-                className={
-                  'price-card ' +
-                  (plan.featured ? 'price-featured' : '')
-                }
-                key={plan.id}
+                className={plan.featured ? 'price-card price-featured' : 'price-card'}
+                key={plan.name}
               >
                 {plan.featured && (
-                  <div className="popular-tag">
-                    PROJECT START
-                  </div>
+                  <span className="popular-tag">PROJECT START</span>
                 )}
-
                 <p className="card-tag">
-                  {plan.id === 'inspection'
-                    ? 'ASSESSMENT'
-                    : plan.id === 'deposit'
-                      ? 'PROJECT RESERVATION'
-                      : 'DEFINED SERVICE'}
+                  {plan.featured ? 'RESERVATION' : 'ROOFING SERVICE'}
                 </p>
-
                 <h3>{plan.name}</h3>
-
-                <div className="price">
-                  {plan.price}
-                  {plan.id === 'inspection' && (
-                    <small> / visit</small>
-                  )}
-                </div>
-
+                <div className="price">{plan.price}</div>
                 <p>{plan.description}</p>
-
                 <button
-                  className={
-                    plan.featured
-                      ? 'button'
-                      : 'button button-outline'
-                  }
-                  onClick={() => {
-                    if (plan.id === 'deposit') {
-                      startDeposit();
-                    } else {
-                      track('service_viewed', {
-                        service_name: plan.name
-                      });
-                      setSelectedPlan(plan);
-                    }
-                  }}
+                  className={plan.featured ? 'button' : 'button button-outline'}
+                  type="button"
+                  onClick={() => setSelectedPlan(plan)}
                 >
-                  {plan.id === 'inspection'
-                    ? 'Book inspection'
-                    : plan.id === 'deposit'
-                      ? 'Start a deposit'
-                      : 'View flat-rate option'}
-                  <span>↗</span>
+                  View payment options <span>↗</span>
                 </button>
-
-                <small className="price-footnote">
-                  {plan.id === 'deposit'
-                    ? 'Applied to your approved project according to your agreement.'
-                    : plan.id === 'inspection'
-                      ? 'Inspection scope and any exclusions will be confirmed before payment.'
-                      : 'Rate and scope must be configured before checkout.'}
-                </small>
               </article>
             ))}
           </div>
 
-          <div className="finance-callout">
-            <div className="finance-icon">↗</div>
-
-            <div>
-              <p className="eyebrow">FINANCING OPTIONS</p>
-              <h3>Explore ways to plan your project.</h3>
-              <p>
-                Ask us about available payment options.
-                Financing is subject to eligibility, provider
-                availability, and final approval.
-              </p>
-            </div>
-
-            <a className="text-link" href="#estimate">
-              Ask about options <span>↗</span>
-            </a>
-          </div>
-        </section>
-
-        <section className="area-section" id="area">
-          <div className="section-wrap area-grid">
-            <div>
-              <p className="eyebrow">04 — WHERE WE WORK</p>
-
-              <h2>
-                Local knowledge.
-                <br />
-                <span>Reliable coverage.</span>
-              </h2>
-
-              <p>
-                Tell us where your property is located and
-                we’ll confirm whether your address is within
-                our service area before scheduling an
-                inspection.
-              </p>
-
-              <a href="#estimate" className="button">
-                Check my area <span>↗</span>
-              </a>
-            </div>
-
-            <div className="area-panel">
-              <div className="area-grid-lines"></div>
-              <div className="area-pin">⌖</div>
-
-              <div className="area-panel-copy">
-                <strong>Is your property in range?</strong>
-                <span>
-                  Share your ZIP code in the estimate form.
-                </span>
-              </div>
-
-              <div className="area-status">
-                <span className="live-dot"></span>
-                SERVICE AREA CONFIRMATION
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section
-          className="section-wrap section-block reviews-section"
-          id="reviews"
-        >
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">05 — TRUST IS EARNED</p>
-              <h2>
-                Proof comes from
-                <br />
-                <span>the work itself.</span>
-              </h2>
-            </div>
-
-            <p className="section-intro">
-              We’re building our reputation one property and
-              one customer conversation at a time.
-            </p>
-          </div>
-
-          <div className="review-note">
-            <div className="review-stars">★★★★★</div>
-            <h3>Real reviews. Real customers.</h3>
-
-            <p>
-              Verified customer feedback will be added here
-              once Cliplock Roofing has reviews approved for
-              publication. We don’t publish placeholder
-              testimonials.
-            </p>
-
-            <a className="text-link" href="#estimate">
-              Be one of our first customers <span>↗</span>
-            </a>
-          </div>
+          <p className="tiny pricing-disclaimer">
+            These are example prices. Confirm your real pricing and payment
+            configuration before accepting orders.
+          </p>
         </section>
 
         <section className="estimate-section" id="estimate">
           <div className="section-wrap estimate-grid">
             <div className="estimate-copy">
-              <p className="eyebrow">06 — LET’S GET STARTED</p>
-
+              <p className="eyebrow">LET’S GET STARTED</p>
               <h2>
-                Tell us what’s
+                Tell us about
                 <br />
-                happening <span>up top.</span>
+                <span>your roof.</span>
               </h2>
-
               <p>
-                Share a few details and our team can follow up
-                about your roof, location, and the right next
-                step.
+                Share a few details about your project. We can use this
+                information to understand the work you need and determine
+                the next steps.
               </p>
 
               <div className="estimate-promise">
                 <span>✓</span>
                 <div>
-                  <strong>No-pressure conversation</strong>
+                  <strong>A clear first step</strong>
                   <small>
-                    Start with the issue. We’ll help you
-                    understand your options.
-                  </small>
-                </div>
-              </div>
-
-              <div className="estimate-promise">
-                <span>✓</span>
-                <div>
-                  <strong>Clear follow-up</strong>
-                  <small>
-                    We’ll use your details to respond about
-                    your request.
+                    Discuss the project before confirming scope and price.
                   </small>
                 </div>
               </div>
             </div>
 
-            <form
-              className="estimate-form"
-              onSubmit={submitEstimate}
-            >
+            <form className="estimate-form" onSubmit={handleSubmit}>
               <div className="form-heading">
-                <span>REQUEST AN ESTIMATE</span>
-                <span>01 — 06</span>
+                <h3>Request an estimate</h3>
+                <p>Fields marked with * are required.</p>
               </div>
 
-              <div className="field-row">
+              <div className="form-row">
                 <label>
-                  Full name
+                  Full name *
                   <input
                     name="name"
                     value={form.name}
-                    onChange={change}
-                    required
-                    placeholder="Your name"
+                    onChange={handleChange}
                     autoComplete="name"
+                    required
                   />
                 </label>
-
                 <label>
-                  Email address
+                  Email address *
                   <input
                     type="email"
                     name="email"
                     value={form.email}
-                    onChange={change}
-                    required
-                    placeholder="you@example.com"
+                    onChange={handleChange}
                     autoComplete="email"
+                    required
                   />
                 </label>
               </div>
 
-              <div className="field-row">
+              <div className="form-row">
                 <label>
                   Phone number
                   <input
+                    type="tel"
                     name="phone"
                     value={form.phone}
-                    onChange={change}
-                    placeholder="(555) 000-0000"
+                    onChange={handleChange}
                     autoComplete="tel"
                   />
                 </label>
-
                 <label>
-                  Property ZIP code
+                  ZIP / postal code
                   <input
-                    name="zip"
-                    value={form.zip}
-                    onChange={change}
-                    required
-                    placeholder="ZIP code"
+                    name="postalCode"
+                    value={form.postalCode}
+                    onChange={handleChange}
                     autoComplete="postal-code"
                   />
                 </label>
               </div>
 
               <label>
-                What do you need help with?
+                Service needed *
                 <select
                   name="service"
                   value={form.service}
-                  onChange={change}
+                  onChange={handleChange}
+                  required
                 >
-                  <option>Roof Inspection</option>
-                  <option>Roof Repair</option>
-                  <option>Roof Replacement</option>
-                  <option>Flat-rate roofing service</option>
-                  <option>Not sure yet</option>
+                  {services.map((service) => (
+                    <option key={service.title} value={service.title}>
+                      {service.title}
+                    </option>
+                  ))}
+                  <option value="Other Roofing Service">
+                    Other roofing service
+                  </option>
                 </select>
               </label>
 
               <label>
-                Tell us a little more
+                Project details
                 <textarea
                   name="details"
                   value={form.details}
-                  onChange={change}
-                  rows="3"
-                  placeholder="Leaks, storm damage, age of roof, or questions…"
+                  onChange={handleChange}
+                  rows="4"
+                  placeholder="Tell us about the roof, issue, or project timeline."
                 />
               </label>
 
               <button
                 className="button form-submit"
                 type="submit"
-                disabled={formState === 'sending'}
+                disabled={formStatus === 'sending'}
               >
-                {formState === 'sending'
-                  ? 'Sending…'
+                {formStatus === 'sending'
+                  ? 'Sending request…'
                   : 'Send estimate request'}
                 <span>↗</span>
               </button>
 
-              {formState === 'success' && (
-                <p className="form-message success">
-                  Your request was received.
+              {formStatus === 'success' && (
+                <p className="form-message success" role="status">
+                  Your request was submitted successfully.
                 </p>
               )}
 
-              {formState === 'error' && (
-                <p className="form-message error">
-                  The lead service is not configured yet.
-                  Your details were not submitted. Set up
-                  the Whop API on the server before going
-                  live.
+              {formStatus === 'error' && (
+                <p className="form-message error" role="alert">
+                  The request could not be sent. The /api/leads backend must
+                  be configured and accessible for this deployment.
                 </p>
               )}
 
-              <p className="privacy-note">
-                By submitting, you agree that Cliplock
-                Roofing may contact you about this request.
-                Do not submit sensitive payment information
-                here.
+              <p className="tiny form-privacy">
+                Do not include payment card details or other sensitive
+                information in this form.
               </p>
             </form>
           </div>
@@ -910,34 +631,25 @@ function App() {
       <footer className="footer">
         <div className="section-wrap footer-main">
           <a className="brand" href="#home">
-            <span className="brand-mark">
-              C<span>+</span>
-            </span>
-            <span>
+            <span className="brand-mark">C<span>+</span></span>
+            <span className="brand-name">
               CLIPLOCK <b>ROOFING</b>
             </span>
           </a>
-
-          <p>Built to protect what matters.</p>
-
-          <a href="#home" className="back-top">
-            BACK TO TOP ↑
+          <p>Built to protect. Made to last.</p>
+          <a className="text-link" href="#home">
+            Back to top <span>↑</span>
           </a>
         </div>
 
         <div className="section-wrap footer-bottom">
-          <span>
-            © {new Date().getFullYear()} CLIPLOCK ROOFING
-          </span>
-          <span>
-            REPAIRS · REPLACEMENTS · INSPECTIONS
-          </span>
-          <span>QUALITY IN EVERY DETAIL.</span>
+          <span>© {new Date().getFullYear()} Cliplock Roofing</span>
+          <span>Roofing solutions with clarity and care.</span>
         </div>
       </footer>
 
       {selectedPlan && (
-        <CheckoutPanel
+        <CheckoutDialog
           plan={selectedPlan}
           onClose={() => setSelectedPlan(null)}
         />
