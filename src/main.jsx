@@ -9,7 +9,7 @@ import {
   BrandingElement
 } from '@whop/elements-react';
 import { loadWhop } from '@whop/elements';
-import './styles.css';
+import './style.css';
 
 const services = [
   {
