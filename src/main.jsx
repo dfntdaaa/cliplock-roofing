@@ -368,14 +368,16 @@ function App() {
           </div>
 
           <div className="hero-visual">
-            <img
-              src="https://images.unsplash.com/photo-1635424710928-9fff2a4a6d6e?auto=format&fit=crop&w=1400&q=85"
-              alt="Modern home with a dark, pitched roof"
-              onError={(event) => {
-                event.currentTarget.src =
-                  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85';
-              }}
-            />
+<img
+  src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85"
+  alt="Contemporary residential architecture with a premium modern roof"
+  loading="eager"
+  onError={(event) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src =
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85';
+  }}
+/>
 
             <div className="image-shade"></div>
 
@@ -478,14 +480,16 @@ function App() {
         <section className="about-section" id="about">
           <div className="section-wrap about-grid">
             <div className="about-image">
-              <img
-                src="https://images.unsplash.com/photo-1632759145351-1d592919f522?auto=format&fit=crop&w=1200&q=85"
-                alt="Roofing professional working on a residential roof"
-                onError={(event) => {
-                  event.currentTarget.src =
-                    'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=1200&q=85';
-                }}
-              />
+<img
+  src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85"
+  alt="Construction professionals working on a building project"
+  loading="lazy"
+  onError={(event) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src =
+      'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=85';
+  }}
+/>
 
               <div className="image-stamp">
                 <span>THE CLIPLOCK</span>
