@@ -35,6 +35,9 @@ jobs:
       - name: Build website
         run: npm run build
 
+      - name: Check generated website
+        run: ls -la dist && test -s dist/index.html
+
       - name: Upload production files
         uses: actions/upload-pages-artifact@v3
         with:
